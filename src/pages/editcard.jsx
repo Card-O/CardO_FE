@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 
 const EditCard = () => {
-    const navigate = useNavigate();
+    
     return(
         <>
             <h3>그림 편집 페이지</h3>
