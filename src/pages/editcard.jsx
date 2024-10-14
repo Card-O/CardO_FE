@@ -1,20 +1,31 @@
 import styled from "styled-components";
+import NavImg from "../components/editcard/editnav";
+import ImgShow from "../components/editcard/editshow";
+import EditPannel from "../components/editcard/editpannel";
 
 
 const EditCard = () => {
     
     return(
         <>
-            <h3>그림 편집 페이지</h3>
+            <NavImg/>
+            <EditComp>
+            <EditPannel/>
+                <ImgShow/>
+                
+            </EditComp>
 
-            <End>제작완료</End>
-            {/* <Linkimg to="">저장하기</Linkimg> */}
+            
         </>
         
     );
 }
 
-const End = styled.button ``
+const EditComp = styled.main `
+display:flex;
+flex-direction:row;
+
+`
 
 // const Linkimg = styled(link)``
 

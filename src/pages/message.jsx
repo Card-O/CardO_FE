@@ -1,17 +1,27 @@
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
+import MessageShow from "../components/ai_messagemake/messageexport";
+import Messageset from "../components/ai_messagemake/messagesend";
 
 const Message = () => {
     const navigate = useNavigate();
     return(
-        <>
-            <h3>메시지 생성하는 페이지</h3>
-
-            <CreateImg >제작완료</CreateImg>
-        </>
+        <MainWrap>
+            
+            <Messageset/>
+            <MessageShow/>
+            
+        </MainWrap>
         
     );
 }
+
+const MainWrap = styled.main `
+display:flex;
+flex-direction: row;
+justify-content: space-between;
+
+`
 
 const CreateImg = styled.button ``
 
