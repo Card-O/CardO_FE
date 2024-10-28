@@ -5,9 +5,10 @@ const InputMessage = () => {
         <MessageWrapper>
         <span>메시지 입력</span><br></br>
         <InputWrapper>
-        <InputTitle placeholder="여기에 제목을 입력해주세요." />
+        {/* <InputTitle placeholder="여기에 제목을 입력해주세요." /> */}
         <MessagePage onClick={() => window.open("/message", "_blank", "width=600,height=400")}>AI자동생성</MessagePage>
-        <MessagePage>직접 입력</MessagePage>
+        {/* <MessagePage>직접 입력</MessagePage> */}
+        <br/><span style={{color: '#758398', fontSize:'15px' }}>직접 입력하는 경우, 아래에 입력 해 주세요.</span>
             <TypingWrapper>
                 <span style={{marginBottom : "15px"}}>(광고)</span>
                 <ShowText placeholder="여기에 메시지를 입력해주세요."/>
