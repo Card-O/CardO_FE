@@ -40,7 +40,6 @@ const InputMessage = () => {
                 <MessagePage onClick={() => window.open("/message", "_blank", "width=600,height=400")}>
                     AI자동생성
                 </MessagePage>
-                <MessagePage>직접 입력</MessagePage>
                 <TypingWrapper>
                     <span style={{ marginBottom: "15px" }}>(광고)</span>
                     <ShowText
