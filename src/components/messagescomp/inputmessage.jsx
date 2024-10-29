@@ -36,7 +36,7 @@ const InputMessage = () => {
         <MessageWrapper>
             <span>메시지 입력</span><br />
             <InputWrapper>
-                <InputTitle placeholder="여기에 제목을 입력해주세요." />
+                {/* <InputTitle placeholder="여기에 제목을 입력해주세요." /> */}
                 <MessagePage onClick={() => window.open("/message", "_blank", "width=600,height=400")}>
                     AI자동생성
                 </MessagePage>
@@ -47,7 +47,7 @@ const InputMessage = () => {
                         onChange={handleChange}
                         placeholder="여기에 메시지를 입력해주세요."
                     />
-                    <span>입력된 메시지: {promotionText}</span>
+                    <span>입력된 메시지: <br></br>{promotionText}</span>
                     <span>무료거부 0000000</span>
                 </TypingWrapper>
             </InputWrapper>
@@ -99,7 +99,7 @@ const MessagePage = styled.button `
 `;
 
 const TypingWrapper = styled.article `
-    height: 272px;
+    height: auto;
     padding: 7px;
     background: #FFFFFF;
     box-shadow: 0px 2px 10px -2px rgba(0, 0, 0, 0.08), 0px 0px 1px rgba(0, 0, 0, 0.28);
