@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useStateContext } from '../../context/StateContext';
 import { useState } from "react";
 import axios from 'axios';
-import ImageChoice from './ImageChoice'; // ImageChoice 컴포넌트 가져오기
+import ImageChoice from './imagechoice'; // ImageChoice 컴포넌트 가져오기
 
 const Messageset = () => {
     const { selectedValue, setSelectedValue, promotionText, setPromotionText  } = useStateContext();

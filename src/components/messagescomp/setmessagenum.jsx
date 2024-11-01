@@ -1,15 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { jwtDecode } from "jwt-decode";
 
 const SetNumber = () => {
     const [sendNumber, setSendNumber] = useState(""); // 발신번호 설정
     const [inputNumber, setInputNumber] = useState(""); // 직접 입력한 전화번호
-    const [addressList, setAddressList] = useState([
-        { name: "홍길동", number: "010-1234-5678" },
-        { name: "김철수", number: "010-9876-5432" },
-    ]); // 주소록 데이터
+    const [addressList, setAddressList] = useState([]); // 주소록 데이터
     const [selectedNumbers, setSelectedNumbers] = useState([]); // 선택한 전화번호 목록
     const [checkedNumbers, setCheckedNumbers] = useState(new Set()); // 체크된 전화번호 목록
+    const [userId, setUserId] = useState(null); // userId 상태
+
+    const token = localStorage.getItem('jwt'); // 로컬 스토리지에서 토큰 가져오기
+    
+    // JWT에서 userId를 가져오는 함수
+    const getUserIdFromToken = () => {
+        if (token) {
+            const decodedToken = jwtDecode(token); // JWT 디코딩
+            return decodedToken.userId; // userId 반환
+        }
+        return null; // 토큰이 없을 경우 null 반환
+    };
+
+    // 주소록 데이터를 가져오는 함수
+    const fetchAddressList = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/address/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`, // JWT를 Authorization 헤더에 추가
+                },
+                method: 'GET',
+                cache: 'no-cache'
+            });
+            const data = await response.json();
+            setAddressList(data); // API 응답 데이터를 주소록 목록으로 설정
+        } catch (error) {
+            console.error("주소록을 가져오는 데 오류가 발생했습니다:", error);
+        }
+    };
+
+    const handleFetchAddressList = () => {
+        fetchAddressList(); // 버튼 클릭 시 주소록을 가져오는 함수 호출
+    };
 
     const handleAddNumber = () => {
         if (inputNumber) {
@@ -60,16 +91,20 @@ const SetNumber = () => {
                             <ContactItem key={index}>
                                 <input
                                     type="checkbox"
-                                    checked={checkedNumbers.has(contact.number)}
-                                    onChange={() => handleSelectNumber(contact.number)}
+                                    checked={checkedNumbers.has(contact.phoneNumber)}
+                                    onChange={() => handleSelectNumber(contact.phoneNumber)}
                                 />
-                                <span>{contact.name}: {contact.number}</span>
+                                <span>{contact.name}: {contact.phoneNumber}</span>
                             </ContactItem>
                         ))}
                     </AddressSetContainer>
                     <PlusButton onClick={handleAddCheckedNumbers}>번호추가+</PlusButton>
                 </InputContainer>
             </AddressWrapper>
+
+            <ButtonContainer>
+                <FetchButton onClick={handleFetchAddressList}>주소록 가져오기</FetchButton> {/* 주소록 가져오기 버튼 추가 */}
+            </ButtonContainer>
 
             <br />
             <ButtonContainer>
@@ -163,6 +198,19 @@ const ViewButton = styled.button`
     border-radius: 5px;
     color: #758398;
     margin-right: 20px;
+`;
+
+const FetchButton = styled.button`
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    background: #0055FF;
+    color: white;
+    border-style: none;
+    border-radius: 5px;
 `;
 
 const AddressWrapper = styled.article`

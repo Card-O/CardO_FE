@@ -9,12 +9,12 @@ const ImageChoice = ({ setSelectedValue }) => {
 
     return (
         <div>
-            <span>이미지 선택</span>
+            <span>이미지 테마 선택 </span>
             <select onChange={handleSelect}>
                 <option value="">선택하세요</option>
-                <option value="bright">밝은</option>
-                <option value="dark">어두운</option>
-                <option value="colorful">화려한</option>
+                <option value="Painting of">명화</option>
+                <option value="Sigma 85 mm f/1.4. High Definition, Bokeh.">실사</option>
+                <option value="graphite drawing of">연필 소묘</option>
             </select>
         </div>
     );
