@@ -8,6 +8,7 @@ const FrameSelect = () => {
     const { canvas } = useCanvas();
 
     const templateList = [
+        {  },
         { name: '1 Template', url: './images/temp1.png' },
         { name: '2 Template', url: './images/temp2.png' },
         { name: '3 Template', url: './images/temp3.png' },
@@ -22,6 +23,13 @@ const FrameSelect = () => {
         const existingTemplate = canvas.getObjects().find(obj => obj.name === 'templateImage');
         if (existingTemplate) {
             canvas.remove(existingTemplate);
+        }
+        
+        // 빈 템플릿 처리
+        if (!template.url) {
+            setCurrentTemplate(template.name);
+            canvas.renderAll();
+            return; // 빈 템플릿인 경우, 아무것도 추가하지 않음
         }
 
         // Load new template image and add to canvas
