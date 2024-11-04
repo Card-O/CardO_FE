@@ -1,7 +1,7 @@
 // editpannel.jsx
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { AiOutlineBold, AiOutlineItalic, AiOutlineUnderline, AiOutlineStrikethrough, AiOutlineAlignLeft, AiOutlineAlignCenter, AiOutlineAlignRight, AiOutlineFontColors } from "react-icons/ai";
+import { AiOutlineBold, AiOutlineItalic, AiOutlineUnderline, AiOutlineStrikethrough, AiOutlineAlignLeft, AiOutlineAlignCenter, AiOutlineAlignRight, AiOutlineFontColors,AiOutlineBgColors } from "react-icons/ai";
 import { MdColorize } from "react-icons/md"; // 스포이드 아이콘
 import FrameSelect from "./frameselect";
 import { useCanvas } from '../../context/CanvasContext';
@@ -69,8 +69,8 @@ const EditPannel = () => {
             });
 
             canvas.add(img);
-            //canvas.sendToBack(img); // 캔버스의 맨 뒤로 배치
-            img.moveTo(0);
+            canvas.sendToBack(img); // 캔버스의 맨 뒤로 배치
+            //img.moveTo(0);
             canvas.renderAll();
         });
 
@@ -140,20 +140,22 @@ const EditPannel = () => {
     };
 
     // 색상 변경 핸들러
-    const handleTextColorChange = (color) => {
+    const handleTextColorChange = (event) => {
+        const color = event.target.value;
+        setTextColor(color);
         const activeObject = canvas.getActiveObject();
         if (activeObject && activeObject.type === "textbox") {
             activeObject.set("fill", color);
-            setTextColor(color); // 상태 업데이트
             canvas.renderAll();
         }
     };
 
-    const handleBackgroundColorChange = (color) => {
+    const handleBackgroundColorChange = (event) => {
+        const color = event.target.value;
+        setBackgroundColor(color);
         const activeObject = canvas.getActiveObject();
         if (activeObject && activeObject.type === "textbox") {
             activeObject.set("backgroundColor", color);
-            setBackgroundColor(color); // 상태 업데이트
             canvas.renderAll();
         }
     };
@@ -232,19 +234,26 @@ const EditPannel = () => {
                     <OptionButton style={{ marginRight: '30px' }} isActive={textAlign === "right"} onClick={() => setTextAlignment("right")}><AiOutlineAlignRight /></OptionButton>
 
                     {/* 텍스트 색상 편집 */}   
-                    <OptionButton onClick={() => handleTextColorChange("#ff0000")}>
+                    <ColorPickerLabel>
                         <AiOutlineFontColors />
-                    </OptionButton>
-                    <ColorDisplay color={textColor} />
-                    <OptionButton onClick={() => handleBackgroundColorChange("#00ff00")}>
-                        <AiOutlineFontColors />
-                    </OptionButton>
+                        <HiddenColorInput
+                            type="color"
+                            value={textColor}
+                            onChange={handleTextColorChange}
+                        />
+                    </ColorPickerLabel >
+                    <ColorDisplay color={textColor} style={{ marginRight: '30px' }}  />
+                            
+                    {/* 배경색 선택 */}
+                    <ColorPickerLabel>
+                        <AiOutlineBgColors />
+                        <HiddenColorInput
+                            type="color"
+                            value={backgroundColor}
+                            onChange={handleBackgroundColorChange}
+                        />
+                        </ColorPickerLabel>
                     <ColorDisplay color={backgroundColor} />
-
-                    {/* 스포이드 (추후 구현 가능) */}
-                    <OptionButton>
-                        <MdColorize />
-                    </OptionButton>
                 </LineOption>
 
                 <FrameSelect style={{ marginTop: '60px' }} />
@@ -252,6 +261,29 @@ const EditPannel = () => {
         </MainWrapp>
     );
 };
+
+// label 스타일을 적용하여 버튼처럼 보이게 함
+const ColorPickerLabel = styled.label`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    font-size: 24px;
+    color: black;
+    background: ${(props) => (props.isActive ? "#333" : "white")};
+    border: 1px solid #949494;
+    cursor: pointer;
+    border-radius: 4px;
+    &:hover {
+        background: #f0f0f0;
+    }
+`;
+// input[type="color"]는 숨김
+const HiddenColorInput = styled.input`
+    display: none;
+`;
+
 
 const MainWrapp = styled.main`
     padding: 20px;

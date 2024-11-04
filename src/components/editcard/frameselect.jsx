@@ -24,14 +24,14 @@ const FrameSelect = () => {
         if (existingTemplate) {
             canvas.remove(existingTemplate);
         }
-        
+
         // 빈 템플릿 처리
         if (!template.url) {
             setCurrentTemplate(template.name);
             canvas.renderAll();
             return; // 빈 템플릿인 경우, 아무것도 추가하지 않음
         }
-
+        
         // Load new template image and add to canvas
         fabric.Image.fromURL(template.url, (img) => {
             img.set({
@@ -43,7 +43,7 @@ const FrameSelect = () => {
                 name: 'templateImage'
             });
             canvas.add(img);
-            // canvas.sendToBack(img);
+            img.moveTo(1);
             setCurrentTemplate(template.name);
             canvas.renderAll();
         });
