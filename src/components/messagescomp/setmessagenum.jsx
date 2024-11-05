@@ -42,10 +42,13 @@ const SetNumber = () => {
         fetchAddressList(); // 버튼 클릭 시 주소록을 가져오는 함수 호출
     };
 
-    const handleAddNumber = () => {
+ const handleAddNumber = () => {
         if (inputNumber) {
-            setSelectedNumbers([...selectedNumbers, inputNumber]);
+            setSelectedNumbers([...selectedNumbers,inputNumber]); 
+
             setInputNumber(""); // 입력 후 필드 비우기
+        } else {
+            console.log("Input number is empty."); // 입력값이 비어있을 때 로그
         }
     };
 
@@ -63,6 +66,55 @@ const SetNumber = () => {
         setSelectedNumbers([...selectedNumbers, ...newNumbers]);
         setCheckedNumbers(new Set()); // 체크 상태 초기화
     };
+
+const handleSendRequest = async () => {
+    console.log("버튼 클릭됨");
+    const promotiontext = localStorage.getItem('promotionText');
+    console.log("발송할 데이터:", {
+        promotiontext,
+        sendNumber,
+        receiveNumbers: selectedNumbers,
+    });
+
+    try {   
+        const image = localStorage.getItem('image'); // base64 인코딩된 이미지 데이터
+        const formData = new FormData();
+
+        // base64 데이터를 Blob으로 변환
+        const byteString = atob(image.split(',')[1]); // 'data:image/png;base64,' 이후 부분을 가져옴
+        const mimeString = image.split(',')[0].split(':')[1].split(';')[0]; // mime type을 가져옴
+        const arrayBuffer = new Uint8Array(byteString.length);
+
+        for (let i = 0; i < byteString.length; i++) {
+            arrayBuffer[i] = byteString.charCodeAt(i);
+        }
+
+        const blob = new Blob([arrayBuffer], { type: mimeString });
+
+        formData.append("promotiontext", promotiontext);
+        formData.append("sendNumber", sendNumber);
+        formData.append("receiveNumbers", JSON.stringify(selectedNumbers));// 배열을 JSON 문자열로 변환
+        formData.append("image", blob, 'image.png'); // Blob 객체와 파일 이름을 지정
+
+        const response = await fetch("http://localhost:8080/ppuriosend", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`, // JWT 토큰 추가
+            },
+            body: formData,
+        });
+
+        if (response.ok) {
+            console.log("발송 성공");
+        } else {
+            const errorMessage = await response.text(); // 또는 response.json()
+            console.error("발송 실패:", errorMessage);
+        }
+    } catch (error) {
+        console.error("발송 요청 중 오류가 발생했습니다:", error);
+    }
+};
+
 
     return (
         <NumWrapper>
@@ -126,7 +178,7 @@ const SetNumber = () => {
 
             <ButtonContainer>
                 <ViewButton>미리보기</ViewButton>
-                <SendButton>발송하기</SendButton>
+                <SendButton onClick={handleSendRequest}>발송하기</SendButton>
             </ButtonContainer>
         </NumWrapper>
     );

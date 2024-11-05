@@ -9,35 +9,65 @@ const Output = () => {
     const jwtToken = localStorage.getItem('jwt');
 
     const handleImageGeneration = async () => {
-        setLoading(true); // 로딩 상태 시작
+        setLoading(true);
         try {
-           const response = await axios.get('http://localhost:8080/image/generate-image', {
+            const response = await axios.get('http://localhost:8080/image/generate-image', {
                 headers: {
-                    Authorization: `Bearer ${jwtToken}`, // JWT를 Authorization 헤더에 추가
+                    Authorization: `Bearer ${jwtToken}`,
                 },
             });
-            setImageUrl(response.data); // 이미지 URL을 상태에 저장
+            const data = response.data;
+           if (data.url) {
+            const base64Image = `data:image/png;base64,${data.url}`;
+            setImageUrl(base64Image);
+        } else {
+            console.error('Base64 data is undefined:', data);
+            alert('이미지 데이터를 가져오는 데 실패했습니다.');
+        }
+            localStorage.setItem('in', data.imgnum);
+            localStorage.setItem('uid', data.userid);
+          
         } catch (error) {
             console.error('Error generating image:', error);
         } finally {
-            setLoading(false); // 로딩 상태 종료
+            setLoading(false);
         }
     };
 
     const handleImageRegeneration = async () => {
-        setLoading(true); // 로딩 상태 시작
+        setLoading(true);
         try {
-           const response = await axios.get('http://localhost:8080/image/generate-next-image', {
-                headers: {
-                    Authorization: `Bearer ${jwtToken}`, // JWT를 Authorization 헤더에 추가
+            const imgnum = localStorage.getItem('in');
+            const userid = localStorage.getItem('uid');
+            const response = await axios.post('http://localhost:8080/image/generate-next-image', null, {
+                params: {
+                    userid: Number(userid),
+                    imgnum: Number(imgnum)
                 },
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                }
             });
-            setImageUrl(response.data); // 이미지 URL을 상태에 저장
+            const data = response.data;
+         if (data.url) {
+            const base64Image = `data:image/png;base64,${data.url}`;
+            setImageUrl(base64Image);
+        } else {
+            console.error('Base64 data is undefined:', data);
+            alert('이미지 데이터를 가져오는 데 실패했습니다.');
+        }
+        
+            localStorage.setItem('in', data.in);
         } catch (error) {
             console.error('Error regenerating image:', error);
         } finally {
-            setLoading(false); // 로딩 상태 종료
+            setLoading(false);
         }
+    };
+
+    const handleSaveImage = async () => {
+        localStorage.setItem('image',imageUrl);
+        alert("저장이 완료되었습니다");
     };
 
     return (
@@ -58,7 +88,7 @@ const Output = () => {
                     <Button backcolor="#FFFFFF" onClick={handleImageRegeneration}>
                         이미지 다시 생성
                     </Button>
-                    <Button backcolor="#FFFFFF">저장하기</Button>
+                    <Button backcolor="#FFFFFF" onClick={handleSaveImage}>사용하기</Button>
                     <Button 
                         backcolor="#0055FF" 
                         color="#FFFFFF"
@@ -72,6 +102,8 @@ const Output = () => {
         </MainWrapper>
     );
 };
+
+
 
 const Label = styled.h2`
     font-size: 1.2rem;
