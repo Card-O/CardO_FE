@@ -44,8 +44,7 @@ const SetNumber = () => {
 
  const handleAddNumber = () => {
         if (inputNumber) {
-            setSelectedNumbers([...selectedNumbers,inputNumber]); 
-
+            setSelectedNumbers(prev => [...prev, inputNumber]);// 새로운 배열 생성
             setInputNumber(""); // 입력 후 필드 비우기
         } else {
             console.log("Input number is empty."); // 입력값이 비어있을 때 로그
@@ -69,6 +68,7 @@ const SetNumber = () => {
 
 const handleSendRequest = async () => {
     console.log("버튼 클릭됨");
+    console.log("selectedNumbers 값:", selectedNumbers);
     const promotiontext = localStorage.getItem('promotionText');
     console.log("발송할 데이터:", {
         promotiontext,
@@ -76,7 +76,9 @@ const handleSendRequest = async () => {
         receiveNumbers: selectedNumbers,
     });
 
+
     try {   
+        const userid = localStorage.getItem('uid');
         const image = localStorage.getItem('image'); // base64 인코딩된 이미지 데이터
         const formData = new FormData();
 
@@ -95,7 +97,7 @@ const handleSendRequest = async () => {
         formData.append("sendNumber", sendNumber);
         formData.append("receiveNumbers", JSON.stringify(selectedNumbers));// 배열을 JSON 문자열로 변환
         formData.append("image", blob, 'image.png'); // Blob 객체와 파일 이름을 지정
-
+        formData.append("userid",userid);
         const response = await fetch("http://localhost:8080/ppuriosend", {
             method: "POST",
             headers: {
@@ -112,6 +114,7 @@ const handleSendRequest = async () => {
         }
     } catch (error) {
         console.error("발송 요청 중 오류가 발생했습니다:", error);
+    } finally {
     }
 };
 
@@ -175,10 +178,15 @@ const handleSendRequest = async () => {
             <br />
             <span style={{ color: 'red', fontSize: '12px' }}>* 심야(21시~08시)에 발송하는 광고문자는 별도 수신동의를 받으셔야 합니다.</span>
             <br />
-
             <ButtonContainer>
                 <ViewButton>미리보기</ViewButton>
-                <SendButton onClick={handleSendRequest}>발송하기</SendButton>
+
+              <SendButton onClick={() => { console.log('버튼 클릭됨'); handleSendRequest(); }}>
+  발송하기
+</SendButton>
+
+
+
             </ButtonContainer>
         </NumWrapper>
     );
@@ -237,6 +245,7 @@ const SendButton = styled.button`
     color: white;
     border-style: none;
     border-radius: 5px;
+    z-index: 10;
 `;
 
 const ViewButton = styled.button`
