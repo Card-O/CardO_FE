@@ -11,7 +11,7 @@ const Output = () => {
     const handleImageGeneration = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:8080/image/generate-image', {
+            const response = await axios.get('http://3.104.109.104:8080/image/generate-image', {
                 headers: {
                     Authorization: `Bearer ${jwtToken}`,
                 },
@@ -39,7 +39,7 @@ const Output = () => {
         try {
             const imgnum = localStorage.getItem('in');
             const userid = localStorage.getItem('uid');
-            const response = await axios.post('http://localhost:8080/image/generate-next-image', null, {
+            const response = await axios.post('http://3.104.109.104:8080/image/generate-next-image', null, {
                 params: {
                     userid: Number(userid),
                     imgnum: Number(imgnum)

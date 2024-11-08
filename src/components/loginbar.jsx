@@ -12,7 +12,7 @@ const LoginComp = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/auth/login', {
+            const response = await axios.post('http://3.104.109.104:8080/auth/login', {
                 username,
                 password,
             },{ headers: {
