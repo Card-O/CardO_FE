@@ -3,77 +3,111 @@ import styled from "styled-components";
 import { jwtDecode } from "jwt-decode";
 
 const SetNumber = () => {
-    const [sendNumber, setSendNumber] = useState(""); // 발신번호 설정
-    const [inputNumber, setInputNumber] = useState(""); // 직접 입력한 전화번호
-    const [addressList, setAddressList] = useState([]); // 주소록 데이터
-    const [selectedNumbers, setSelectedNumbers] = useState([]); // 선택한 전화번호 목록
-    const [checkedNumbers, setCheckedNumbers] = useState(new Set()); // 체크된 전화번호 목록
-    const [userId, setUserId] = useState(null); // userId 상태
+    const [sendNumber, setSendNumber] = useState(""); // 발신번호 저장 상태변수
+    const [inputNumber, setInputNumber] = useState(""); // 직접 입력한 수신번호 저장 상태변수
+    const [addressList, setAddressList] = useState([]); // 주소록 저장 상태변수
+    const [selectedNumbers, setSelectedNumbers] = useState([]); // 선택한 수신번호 저장하는 상태변수
+    const [checkedNumbers, setCheckedNumbers] = useState(new Set()); // 체크된 수신번호 저장하는 상태변수
+    const [userId, setUserId] = useState(null); // 사용자ID 저장 상태변수
 
-    const token = localStorage.getItem('jwt'); // 로컬 스토리지에서 토큰 가져오기
+    const token = localStorage.getItem('jwt'); // 로컬 스토리지에서 토큰 가져옴
     
-    // JWT에서 userId를 가져오는 함수
-    const getUserIdFromToken = () => {
+    // 컴포넌트 렌더링될 때마다 userId를 추출하여 상태에 저장
+    useEffect(() => {
         if (token) {
-            const decodedToken = jwtDecode(token); // JWT 디코딩
-            return decodedToken.userId; // userId 반환
+            const decodedToken = jwtDecode(token);
+            console.log("Decoded Token:", decodedToken);
+            setUserId(decodedToken.sub);
+            console.log(decodedToken.sub);
         }
-        return null; // 토큰이 없을 경우 null 반환
-    };
+    }, [token]); // token 변경될 때마다 실행
 
-    // 주소록 데이터를 가져오는 함수
+    // useEffect(() => {
+    //     if (userId) {
+    //         fetchAddressList();
+    //     }
+    // }, [userId]);
+
+
+    // 주소록 가져오는 함수
     const fetchAddressList = async () => {
         try {
             const response = await fetch(`http://localhost:8080/address/${userId}`, {
                 headers: {
-                    Authorization: `Bearer ${jwtToken}`, // JWT를 Authorization 헤더에 추가
+                    Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
                 },
                 method: 'GET',
                 cache: 'no-cache'
             });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
             const data = await response.json();
-            setAddressList(data); // API 응답 데이터를 주소록 목록으로 설정
+            console.log(data);
+            setAddressList(data); // 주소록 데이터 상태에 저장 
+
         } catch (error) {
             console.error("주소록을 가져오는 데 오류가 발생했습니다:", error);
         }
     };
 
+    // 주소록 가져오기 버튼 처리 함수 
     const handleFetchAddressList = () => {
         fetchAddressList(); // 버튼 클릭 시 주소록을 가져오는 함수 호출
     };
 
- const handleAddNumber = () => {
+    // 사용자가 직접 입력한 수신번호 처리 함수 
+    const handleAddNumber = () => {
         if (inputNumber) {
-            setSelectedNumbers(prev => [...prev, inputNumber]);// 새로운 배열 생성
+            // 중복 체크
+            if (!selectedNumbers.includes(inputNumber)) {
+                setSelectedNumbers(prev => [...prev, inputNumber]); // 새로운 배열 생성
+            } else {
+                console.log("이미 존재하는 번호입니다.");
+            }
             setInputNumber(""); // 입력 후 필드 비우기
         } else {
-            console.log("Input number is empty."); // 입력값이 비어있을 때 로그
+            console.log("Input number is empty.");
         }
     };
 
+    // 주소록에서 체크한 수신번호 처리 함수
     const handleSelectNumber = (number) => {
         if (checkedNumbers.has(number)) {
-            checkedNumbers.delete(number);
+            checkedNumbers.delete(number); // 이미 체크된 번호는 제거
         } else {
-            checkedNumbers.add(number);
+            checkedNumbers.add(number); // 체크되지 않은 번호는 추가
         }
         setCheckedNumbers(new Set(checkedNumbers));
     };
 
+    // 체크한 수신번호를 선택한 받는사람 목록에 추가하는 함수
     const handleAddCheckedNumbers = () => {
         const newNumbers = Array.from(checkedNumbers);
-        setSelectedNumbers([...selectedNumbers, ...newNumbers]);
+        // 중복 체크
+        const uniqueNumbers = newNumbers.filter(number => !selectedNumbers.includes(number));
+        setSelectedNumbers([...selectedNumbers, ...uniqueNumbers]);
         setCheckedNumbers(new Set()); // 체크 상태 초기화
     };
 
-const handleSendRequest = async () => {
-    console.log("버튼 클릭됨");
-    console.log("selectedNumbers 값:", selectedNumbers);
-    const promotiontext = localStorage.getItem('promotionText');
-    console.log("발송할 데이터:", {
-        promotiontext,
-        sendNumber,
-        receiveNumbers: selectedNumbers,
+    // 전체 선택 버튼 처리 함수
+    const handleSelectAll = () => {
+        const allNumbers = addressList.map(contact => contact.phoneNumber);
+        const newCheckedNumbers = new Set(allNumbers);
+        setCheckedNumbers(newCheckedNumbers);
+    };
+
+    // 발송 요청 처리하는 함수
+    const handleSendRequest = async () => {
+        console.log("버튼 클릭됨");
+        console.log("selectedNumbers 값:", selectedNumbers);
+        const promotiontext = localStorage.getItem('promotionText');
+        console.log("발송할 데이터:", {
+            promotiontext,
+            sendNumber,
+            receiveNumbers: selectedNumbers,
     });
 
 
@@ -140,7 +174,10 @@ const handleSendRequest = async () => {
                     <PlusButton onClick={handleAddNumber}>번호추가+</PlusButton>
                 </InputContainer>
                 <InputContainer>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                     <span>주소록</span>
+                    <SelectAllButton  onClick={handleSelectAll}>전체 선택</SelectAllButton >
+                    </div>
                     <AddressSetContainer>
                         {addressList.map((contact, index) => (
                             <ContactItem key={index}>
@@ -214,6 +251,17 @@ const InputField = styled.input`
     border: 1px solid #C7C7C7;
     border-radius: 4px;
     box-sizing: border-box;
+`;
+
+const SelectAllButton = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95px;
+    height: 28px;
+    background: #FFFFFF;
+    border: 1px solid #424242;
+    border-radius: 4px;
 `;
 
 const DeleteButton = styled.button`
@@ -290,12 +338,22 @@ const InputArea = styled.textarea`
     border-radius: 5px;
 `;
 
+const AddressSetContainer = styled.article`
+    box-sizing: border-box;
+    width: 200px;
+    height: 250px;
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    background: white;
+    overflow-y: auto; // 스크롤
+`;
+
 const PlusButton = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
     width: 200px;
-    height: 46px;
+    height: 70px;
     background: #FFFFFF;
     border: 1px solid #424242;
     border-radius: 4px;
@@ -308,23 +366,14 @@ const InputContainer = styled.article`
     padding: 15px;
     gap: 12px;
     width: 220px;
-    height: 240px;
+    height: 190px;
     background: #F1F5F9;
     border-radius: 4px;
     color: #758398;
 `;
 
-const AddressSetContainer = styled.article`
-    box-sizing: border-box;
-    width: 200px;
-    height: 250px;
-    border: 1px solid #CCCCCC;
-    border-radius: 10px;
-    background: white;
-`;
-
 const AddressView = styled.div`
-    max-height: 150px;
+    max-height: 100px;
     overflow-y: auto;
 `;
 
