@@ -10,7 +10,7 @@ const SignupComp = () => {
 
     const handleSignup = async () => {
         try {
-            const response = await axios.post('http://3.104.109.104:8080/auth/register', {
+            const response = await axios.post('http://3.104.109.104:4173/auth/register', {
                 username,
                 password,
             }, {

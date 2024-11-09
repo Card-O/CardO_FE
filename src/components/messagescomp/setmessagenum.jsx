@@ -32,7 +32,7 @@ const SetNumber = () => {
     // 주소록 가져오는 함수
     const fetchAddressList = async () => {
         try {
-            const response = await fetch(`http://3.104.109.104:8080/address/${userId}`, {
+            const response = await fetch(`http://3.104.109.104:4173/address/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`, // JWT를 Authorization 헤더에 추가
                 },
@@ -132,7 +132,7 @@ const SetNumber = () => {
         formData.append("receiveNumbers", JSON.stringify(selectedNumbers));// 배열을 JSON 문자열로 변환
         formData.append("image", blob, 'image.png'); // Blob 객체와 파일 이름을 지정
         formData.append("userid",userid);
-        const response = await fetch("http://3.104.109.104:8080/ppuriosend", {
+        const response = await fetch("http://3.104.109.104:4173/ppuriosend", {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`, // JWT 토큰 추가
