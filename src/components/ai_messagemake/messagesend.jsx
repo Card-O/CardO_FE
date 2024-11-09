@@ -27,7 +27,7 @@ const Messageset = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://3.104.109.104:8080/chat', data, {
+            const response = await axios.post('http://3.104.109.104:4173/chat', data, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`, // JWT를 Authorization 헤더에 포함
