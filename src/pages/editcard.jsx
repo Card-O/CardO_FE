@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import GlobalStyle from '../styles/globalstyle';
+import { CanvasProvider } from '../context/CanvasContext';
 import NavImg from "../components/editcard/editnav";
 import ImgShow from "../components/editcard/editshow";
 import EditPannel from "../components/editcard/editpannel";
@@ -7,7 +9,8 @@ import EditPannel from "../components/editcard/editpannel";
 const EditCard = () => {
     
     return(
-        <>
+        <CanvasProvider>
+            <GlobalStyle />
             <NavImg/>
             <EditComp>
             <EditPannel/>
@@ -16,7 +19,7 @@ const EditCard = () => {
             </EditComp>
 
             
-        </>
+        </CanvasProvider>
         
     );
 }
