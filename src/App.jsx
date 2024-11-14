@@ -12,6 +12,7 @@ import Home from './pages/home';
 import Service from './pages/service';
 import Message from './pages/message';
 import Sigup from './pages/signup';
+import Preview from './pages/preview';
 
 const router = createBrowserRouter ( [
   {
@@ -37,6 +38,11 @@ const router = createBrowserRouter ( [
         //메시지 전송 화면
         path: 'message',
         element: <Message />
+      },
+      {
+          //메시지 전송 화면
+          path: 'preview',
+          element: <Preview />
       },
       {
         //이미지 편집 화면

@@ -216,7 +216,8 @@ const SetNumber = () => {
             <span style={{ color: 'red', fontSize: '12px' }}>* 심야(21시~08시)에 발송하는 광고문자는 별도 수신동의를 받으셔야 합니다.</span>
             <br />
             <ButtonContainer>
-                <ViewButton>미리보기</ViewButton>
+                <ViewButton onClick={()=>window.open("/preview", "_blank", "width=600,height=400")}>
+                    미리보기</ViewButton>
 
               <SendButton onClick={() => { console.log('버튼 클릭됨'); handleSendRequest(); }}>
   발송하기
