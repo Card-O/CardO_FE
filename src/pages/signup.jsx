@@ -8,7 +8,9 @@ const Sigup = () => {
         <>
             <SignupComp/>
             <BlueComp>
+                <Link to="/">
                 <Logo src="/images/21.png" alt="Logo" />
+                </Link>
                 <Textbox>
                     <h2>획기적인 홍보문구의 완성, Card - O</h2>
                     <h4>with 뿌리오</h4>
@@ -33,7 +35,7 @@ const Textbox = styled.article `
 color:white;
 font-size: 14px; /* 글씨 크기를 조금 작게 조정 */
     position: absolute;
-    right: 18px; /* 화면의 오른쪽에서 10px 떨어지게 조정 */
+    right: 200px; /* 화면의 오른쪽에서 10px 떨어지게 조정 */
     top: 50%; /* 수직 가운데 정렬을 위해 위치를 50%로 설정 */
     transform: translateY(-50%); /* 수직 가운데 정렬을 위해 변환 */
     max-width: 80%; /* 텍스트 박스의 최대 너비를 제한하여 레이아웃이 깨지지 않도록 설정 */

@@ -19,9 +19,8 @@ const Service = () => {
             <OutputBox>
             <OutputImage/>
             </OutputBox>
-            
             <StyledFooter />
-        </ServiceWrapper>       
+        </ServiceWrapper>
     );
 }
 
