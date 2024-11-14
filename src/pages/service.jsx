@@ -1,6 +1,8 @@
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
-import NavBar from "../components/navbar";
+
+import NavBarEdit from "../components/navbarMain/navbar_edit";
+
 import OutputImage from "../components/outputImage";
 import MessageOption from "../components/messageoption";
 import Footer from "../components/footer";
@@ -9,7 +11,7 @@ const Service = () => {
     const navigate = useNavigate();
     return(
         <ServiceWrapper>
-            <NavBar/>
+            <NavBarEdit/>
             {/* 메시지+번호 입력 컴포넌트 */}
             <MessageOption/>
 
