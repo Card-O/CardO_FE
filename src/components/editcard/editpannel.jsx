@@ -53,8 +53,8 @@ const EditPannel = () => {
         // Delete 키 이벤트 추가
         window.addEventListener('keydown', handleDeleteKey);
     
-        // sample 이미지 대신 11.09 사용할 이미지 받아오기
-        const imageUrl = './public/images/sample.png'; // 삽입할 이미지 파일 경로 설정
+        // 사용할 이미지 받아오기
+        const imageUrl = localStorage.getItem('image'); // 삽입할 이미지 파일 경로 설정
 
         fabric.Image.fromURL(imageUrl, (img) => {
             // 캔버스 크기에 맞게 이미지 크기 설정
@@ -74,6 +74,18 @@ const EditPannel = () => {
             //img.moveTo(0);
             canvas.renderAll();
         });
+
+        //
+        const textBox = new fabric.Textbox(localStorage.getItem('recommend'), {
+            left: 100,
+            top: 550,
+            fontSize: 30,
+            fontFamily: 'Arial',
+            fill: '#FFFFFF',
+            textAlign: 'center',
+            width: 500, 
+          });
+        canvas.add(textBox);
 
         const handleObjectSelected = () => {
             const activeObject = canvas.getActiveObject();
