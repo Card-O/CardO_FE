@@ -20,6 +20,9 @@ const Messageset = () => {
             what: what,
             atmosphere: selectedValue, // 선택한 분위기
         };
+        const recommendText = `${target}\n${time}`;
+        localStorage.setItem('recommend', recommendText);
+
         console.log('Data being sent:', data);
         // localStorage에서 JWT 가져오기
         const token = localStorage.getItem('jwt'); // 'jwt'는 실제 key로 변경할 수 있음

@@ -93,7 +93,7 @@ const Output = () => {
                         backcolor="#0055FF" 
                         color="#FFFFFF"
                         style={{ marginTop: "10px" }} 
-                        onClick={() => window.open("/editcard", "_blank", "width=600,height=400")}
+                        onClick={() => window.open("/editcard", "_blank", "width=800,height=600")}
                     >
                         편집하기
                     </Button>
