@@ -70,6 +70,13 @@ const Output = () => {
         alert("저장이 완료되었습니다");
     };
 
+    // base64 형태의 이미지를 전달하며 window 띄우기 (sessionStorage)
+    const newWindow = () => {
+        // imageUrl = {"https://image.utoimage.com/preview/cp872722/2022/12/202212008462_500.jpg"}
+        sessionStorage.setItem("imageUrl", imageUrl);
+        window.open("/editcard", "_blank", "width=1200,height=800")
+    };
+
     return (
         <MainWrapper>
             <LoadImg onClick={handleImageGeneration}>
@@ -93,7 +100,7 @@ const Output = () => {
                         backcolor="#0055FF" 
                         color="#FFFFFF"
                         style={{ marginTop: "10px" }} 
-                        onClick={() => window.open("/editcard", "_blank", "width=800,height=600")}
+                        onClick={newWindow}
                     >
                         편집하기
                     </Button>
