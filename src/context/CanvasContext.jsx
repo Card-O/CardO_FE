@@ -10,8 +10,8 @@ export const CanvasProvider = ({ children }) => {
   useEffect(() => {
     if (!canvas) { // 이미 캔버스가 생성되지 않았을 때만 생성
       const newCanvas = new fabric.Canvas(canvasRef.current, {
-        width: 700,
-        height: 700,
+        width: 500,
+        height: 500,
       });
       setCanvas(newCanvas);
     }
@@ -19,7 +19,7 @@ export const CanvasProvider = ({ children }) => {
     return () => {
       if (canvas) canvas.dispose();
     };
-  }, [canvas]);
+  }, [canvasRef]);
 
   return (
     <CanvasContext.Provider value={{ canvas, canvasRef }}>

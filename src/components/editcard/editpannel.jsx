@@ -7,7 +7,7 @@ import FrameSelect from "./frameselect";
 import { useCanvas } from '../../context/CanvasContext';
 import { fabric } from 'fabric';
 
-const EditPannel = () => {
+const EditPannel = ({imageUrl}) => {
     const { canvas } = useCanvas(); // context로 canvas 객체 공유
     const [count, setCount] = useState(20); // 폰트 크기
     const [textAlign, setTextAlign] = useState("left"); // 텍스트 정렬 상태
@@ -53,9 +53,7 @@ const EditPannel = () => {
         // Delete 키 이벤트 추가
         window.addEventListener('keydown', handleDeleteKey);
     
-        // 사용할 이미지 받아오기
-        const imageUrl = localStorage.getItem('image'); // 삽입할 이미지 파일 경로 설정
-
+        // 사용할 이미지 받아오기는 sessionStorage 이용
         fabric.Image.fromURL(imageUrl, (img) => {
             // 캔버스 크기에 맞게 이미지 크기 설정
             img.scaleToWidth(canvas.width);
@@ -75,7 +73,6 @@ const EditPannel = () => {
             canvas.renderAll();
         });
 
-        //
         const textBox = new fabric.Textbox(localStorage.getItem('recommend'), {
             left: 100,
             top: 550,

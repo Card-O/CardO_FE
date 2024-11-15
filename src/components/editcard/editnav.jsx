@@ -13,7 +13,22 @@ const NavImg = () => {
 
     const handleComplete = () => {
         setIsCompleted(true);
-        console.log("제작 완료 버튼 클릭됨");
+        if (canvas) {
+            // 캔버스를 base64 URL로 변환
+            const dataURL = canvas.toDataURL({
+                format: 'png', // PNG 포맷으로 저장 (필요에 따라 'jpeg' 등으로 변경 가능)
+                quality: 0.8    // 이미지 품질 설정 (0 ~ 1)
+            });
+
+            // localStorage의 특정 값이 변경될 때마다 outputImage 새로 렌더링 되게 만들기
+            console.log(dataURL);
+            localStorage.setItem('image',dataURL);
+            alert("저장이 완료되었습니다!");
+            window.close();
+        } else {
+            console.warn("Canvas is not initialized.");
+        }
+        
     };
 
     const handleSaveImage = () => {
@@ -37,10 +52,12 @@ const NavImg = () => {
     return (
         <NavWrapp>
             <IconComp>
+                {/* 
                 <FaArrowLeft style={{ color: "white", marginRight: '20px' }} onClick={handleComplete} />
-                <FaArrowRight style={{ color: "white", marginRight: '60px' }} />
+                <FaArrowRight style={{ color: "white", marginRight: '60px' }} /> 
+                */}
                 <EndButton onClick={handleComplete}>
-                    {isCompleted ? "완료됨" : "제작완료"}
+                    {isCompleted ? "적용 완료!" : "제작완료"}
                 </EndButton>
                 <MdSaveAlt style={{ color: "white" }} />
                 <span style={{ color: "white", cursor: "pointer" }} onClick={handleSaveImage}>
