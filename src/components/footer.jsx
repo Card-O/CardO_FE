@@ -3,7 +3,8 @@ import styled from "styled-components";
 const Footer = ()=> {
     return(
         <FootWrapp>
-            sa
+            Card-Oⓒ2024_ppurio <br />
+            공서연,김동휘,노경민,주희연,조희연
         </FootWrapp>
     )
 }
