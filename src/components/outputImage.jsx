@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
 const Output = () => {
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageUrl, setImageUrl] = useState(localStorage.getItem('image') || '');
     const [loading, setLoading] = useState(false);
 
     const jwtToken = localStorage.getItem('jwt');
@@ -77,6 +77,23 @@ const Output = () => {
         sessionStorage.setItem("imageUrl", imageUrl);
         window.open("/editcard", "_blank", "width=1200,height=800")
     };
+	
+	 // 로컬 스토리지의 'image' 값이 변경될 때마다 상태를 갱신
+    useEffect(() => {
+        const handleStorageChange = (e) => {
+            if (e.key === 'image') {
+                setImageUrl(e.newValue); // 로컬 스토리지의 이미지 URL을 업데이트
+            }
+        };
+
+        // storage 이벤트 리스너 등록
+        window.addEventListener('storage', handleStorageChange);
+
+        // 컴포넌트 언마운트 시 리스너 제거
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
 
     return (
         <MainWrapper>

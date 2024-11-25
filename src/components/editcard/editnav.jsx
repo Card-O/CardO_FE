@@ -15,10 +15,7 @@ const NavImg = () => {
         setIsCompleted(true);
         if (canvas) {
             // 캔버스를 base64 URL로 변환
-            const dataURL = canvas.toDataURL({
-                format: 'png', // PNG 포맷으로 저장 (필요에 따라 'jpeg' 등으로 변경 가능)
-                quality: 0.8    // 이미지 품질 설정 (0 ~ 1)
-            });
+            const dataURL = canvas.toDataURL("image/png");
 
             // localStorage의 특정 값이 변경될 때마다 outputImage 새로 렌더링 되게 만들기
             console.log(dataURL);

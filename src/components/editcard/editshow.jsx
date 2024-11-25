@@ -28,5 +28,8 @@ const MainWrap = styled.main`
 const StyledCanvas = styled.canvas`
     border: 2px solid black;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(2); /* 화면에서 캔버스를 2배 확대 */
+    width: 256px; /* 원본 크기 */
+    height: 256px; /* 원본 크기 */
 `;
 export default ImgShow;
