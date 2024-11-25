@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { jwtDecode } from "jwt-decode";
 
 const SetNumber = () => {
+    const [isSending, setIsSending] = useState(null);
     const [sendNumber, setSendNumber] = useState(""); // 발신번호 저장 상태변수
     const [inputNumber, setInputNumber] = useState(""); // 직접 입력한 수신번호 저장 상태변수
     const [addressList, setAddressList] = useState([]); // 주소록 저장 상태변수
@@ -101,6 +102,7 @@ const SetNumber = () => {
 
     // 발송 요청 처리하는 함수
     const handleSendRequest = async () => {
+	setIsSending(true);
         console.log("버튼 클릭됨");
         console.log("selectedNumbers 값:", selectedNumbers);
         const promotiontext = localStorage.getItem('promotionText');
@@ -120,12 +122,21 @@ const SetNumber = () => {
         const byteString = atob(image.split(',')[1]); // 'data:image/png;base64,' 이후 부분을 가져옴
         const mimeString = image.split(',')[0].split(':')[1].split(';')[0]; // mime type을 가져옴
         const arrayBuffer = new Uint8Array(byteString.length);
-
+	console.log("ByteString:",byteString);
+	console.log("mimeString:",mimeString);
         for (let i = 0; i < byteString.length; i++) {
             arrayBuffer[i] = byteString.charCodeAt(i);
         }
 
         const blob = new Blob([arrayBuffer], { type: mimeString });
+
+	// Blob 객체의 속성 확인
+    console.log("Blob 객체:", blob);
+    console.log("Blob 크기:", blob.size);  // Blob의 크기
+    console.log("Blob MIME 타입:", blob.type); // MIME 타입
+
+    // Blob의 내용이 제대로 들어가 있는지 확인 (content를 출력하는 방법은 로그로 볼 수 없지만 size로 확인 가능)
+    console.log("Blob 내용 크기:", blob.size);
 
         formData.append("promotiontext", promotiontext);
         formData.append("sendNumber", sendNumber);
@@ -141,14 +152,15 @@ const SetNumber = () => {
         });
 
         if (response.ok) {
-            console.log("발송 성공");
+            alert("발송이 완료되었습니다.");
         } else {
             const errorMessage = await response.text(); // 또는 response.json()
-            console.error("발송 실패:", errorMessage);
+            alert("발송에 실패했습니다. 다시 시도해 주세요.");
         }
     } catch (error) {
-        console.error("발송 요청 중 오류가 발생했습니다:", error);
+        alert("발송 요청 중 오류가 발생했습니다:", error);
     } finally {
+	    setIsSending(false);
     }
 };
 
@@ -219,8 +231,8 @@ const SetNumber = () => {
                 <ViewButton onClick={()=>window.open("/preview", "_blank", "width=600,height=400")}>
                     미리보기</ViewButton>
 
-              <SendButton onClick={() => { console.log('버튼 클릭됨'); handleSendRequest(); }}>
-  발송하기
+              <SendButton onClick={handleSendRequest} disabled={isSending}>
+  {isSending ? '발송중...' : '발송하기' }
 </SendButton>
 
 
@@ -228,7 +240,7 @@ const SetNumber = () => {
             </ButtonContainer>
         </NumWrapper>
     );
-}
+};
 
 const Label = styled.h2`
     font-size: 1.2rem;

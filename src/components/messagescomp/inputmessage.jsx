@@ -53,7 +53,6 @@ const InputMessage = () => {
                         onChange={handleChange}
                         placeholder="여기에 메시지를 입력해주세요."
                     />
-                    <span style={{ marginTop: "20px" }}>입력된 메시지: {promotionText}</span>
                     <br/>
                     <span>무료거부 0808100095</span>
                 </TypingWrapper>
