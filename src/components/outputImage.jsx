@@ -52,12 +52,13 @@ const Output = () => {
          if (data.url) {
             const base64Image = `data:image/png;base64,${data.url}`;
             setImageUrl(base64Image);
+            localStorage.setItem('in', data.in);
         } else {
             console.error('Base64 data is undefined:', data);
             alert('이미지 데이터를 가져오는 데 실패했습니다.');
         }
         
-            localStorage.setItem('in', data.in);
+            
         } catch (error) {
             console.error('Error regenerating image:', error);
         } finally {
