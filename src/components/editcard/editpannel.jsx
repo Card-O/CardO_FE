@@ -76,7 +76,7 @@ const EditPannel = ({imageUrl}) => {
         const textBox = new fabric.Textbox(localStorage.getItem('recommend'), {
             left: 0,
             top: 0,
-            fontSize: 30,
+            fontSize: 12,
             fontFamily: 'Arial',
             fill: '#FFFFFF',
             textAlign: 'center',
