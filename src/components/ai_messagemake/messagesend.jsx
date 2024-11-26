@@ -50,11 +50,11 @@ const Messageset = () => {
     return (
         <MainWrap>
             {loading && <LoadingWrapper>로딩 중입니다...</LoadingWrapper>}
-            <span>시간, 장소</span>
+            <span>시간, 장소 예)2024년 12월 24일,예술의 전당</span>
             <InputBox value={time} onChange={(e) => setTime(e.target.value)} />
-            <span>홍보 대상</span>
+            <span>홍보 대상 예) 발레공연</span>
             <InputBox value={target} onChange={(e) => setTarget(e.target.value)} />
-            <span>무엇을</span>
+            <span>전송 목적 예) 10% 할인</span>
             <InputBox value={what} onChange={(e) => setWhat(e.target.value)} />
 
             <label>
