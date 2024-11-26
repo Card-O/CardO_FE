@@ -76,11 +76,11 @@ const EditPannel = ({imageUrl}) => {
         const textBox = new fabric.Textbox(localStorage.getItem('recommend'), {
             left: 0,
             top: 0,
-            fontSize: 12,
+            fontSize: 17,
             fontFamily: 'Arial',
             fill: '#FFFFFF',
             textAlign: 'center',
-            width: 500, 
+            width: 230, 
           });
         canvas.add(textBox);
 

@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 
 const SetNumber = () => {
     const [isSending, setIsSending] = useState(null);
-    const [sendNumber, setSendNumber] = useState(""); // 발신번호 저장 상태변수
+    const [sendNumber, setSendNumber] = useState("01040620772"); // 발신번호 저장 상태변수
     const [inputNumber, setInputNumber] = useState(""); // 직접 입력한 수신번호 저장 상태변수
     const [addressList, setAddressList] = useState([]); // 주소록 저장 상태변수
     const [selectedNumbers, setSelectedNumbers] = useState([]); // 선택한 수신번호 저장하는 상태변수
